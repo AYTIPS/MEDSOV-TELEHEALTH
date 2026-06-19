@@ -67,19 +67,13 @@ docker compose exec openemr php /var/www/localhost/htdocs/openemr/interface/modu
 
 ## Release Package
 
-The mounted Docker workflow is for development only. For final submission/testing, build a release zip from the repository root:
-
-```powershell
-.\scripts\package_medsov_telehealth.ps1
-```
-
-Output:
+The mounted Docker workflow is for development only. For final submission/testing, the validated release zip is already included at:
 
 ```text
 dist/oe-module-medsov-telehealth-1.0.0.zip
 ```
 
-The zip contains the OpenEMR module folder and excludes development-only helpers such as demo data seeding.
+The zip contains the OpenEMR module folder needed for installation.
 
 For a normal OpenEMR install, extract the zip and copy `oe-module-medsov-telehealth` into:
 

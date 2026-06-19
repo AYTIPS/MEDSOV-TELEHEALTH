@@ -54,15 +54,9 @@ The SQL uses OpenEMR upgrade directives such as `#IfNotTable` and `#IfNotRow`, s
 
 Do not run cleanup against a database that contains demo or test telehealth records you want to keep.
 
-## Build Release Zip
+## Release Zip
 
-From the repository root:
-
-```powershell
-.\scripts\package_medsov_telehealth.ps1
-```
-
-Output:
+The validated release package is included in the repository at:
 
 ```text
 dist/oe-module-medsov-telehealth-1.0.0.zip
