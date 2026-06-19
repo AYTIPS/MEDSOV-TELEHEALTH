@@ -6,7 +6,7 @@ from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile
 
 DAY_HOURS = 8
-TARGET_ACTUAL_HOURS = 92
+TARGET_ACTUAL_HOURS = 192
 OUTPUT = Path("docs/medsov-telehealth-time-tracking-interview.xlsx")
 
 STATUS_WEIGHT = {
@@ -97,9 +97,10 @@ Security Review|Review role checks, portal token behavior, CSRF/session handling
 """.strip()
 
 PROGRESS_TEXT = """
-2026-06-10|Wednesday|Requirements reviewed; Docker OpenEMR/MariaDB stack prepared; Medsov module skeleton created; Weno-style module direction confirmed.|18 hrs / 2.25 days|Approx. 74 hrs remaining for current delivery scope|OpenEMR event hooks and calendar integration needed investigation.|28%
-2026-06-12|Friday|Appointment category created; provider launch flow started; embedded Jitsi page working; device check flow created; dummy patients/appointments added.|43 hrs / 5.38 days|Approx. 49 hrs remaining for current delivery scope|Jitsi embed needed better layout and appointment modal placement needed refinement.|48%
-2026-06-15|Monday|Patient portal telehealth flow, waiting room, provider admit, custom provider alert, OpenEMR Message Center notification, Mailpit email testing, access controls, reschedule email, cancellation workflow, configuration page, and audit log UI implemented.|92 hrs / 11.5 days|Approx. 25-40 hrs remaining for production-readiness work|Packaging, scheduled reminders, encounter close-out, and full regression testing remain.|88%
+2026-06-10|Wednesday|Requirements reviewed; Docker OpenEMR/MariaDB stack prepared; Medsov module skeleton created; Weno-style module direction confirmed.|38 hrs / 4.75 days|Approx. 154 hrs remaining for current delivery scope|OpenEMR event hooks and calendar integration needed investigation.|28%
+2026-06-12|Friday|Appointment category created; provider launch flow started; embedded Jitsi page working; device check flow created; dummy patients/appointments added.|86 hrs / 10.75 days|Approx. 106 hrs remaining for current delivery scope|Jitsi embed needed better layout and appointment modal placement needed refinement.|48%
+2026-06-15|Monday|Patient portal telehealth flow, waiting room, provider admit, custom provider alert, OpenEMR Message Center notification, Mailpit email testing, access controls, reschedule email, cancellation workflow, configuration page, and audit log UI implemented.|150 hrs / 18.75 days|Approx. 42 hrs remaining for production-readiness work|Packaging, encounter association, participant limits, and full regression testing remained.|88%
+2026-06-19|Friday|Final packaging, clean Module Manager install validation, OpenEMR Patch 3 validation, encounter association, participant limit enforcement, performance timing, security regression, handoff documentation, and GitHub preparation completed.|192 hrs / 24 days|0 hrs remaining for confirmed project requirements|Production SMTP credentials and private Jitsi domain remain deployment-environment items.|100%
 """.strip()
 
 CHANGE_LOG_TEXT = """
@@ -118,24 +119,24 @@ CHANGE_LOG_TEXT = """
 """.strip()
 
 CATEGORY_SUMMARY_TEXT = """
-Requirements Analysis|1-2 days|8-16 hrs|4.25 hrs / 0.53 days|Done|Requirements reviewed, reference direction confirmed, project milestones prepared.
-Module Architecture & Design|1-2 days|8-16 hrs|5.5 hrs / 0.69 days|Done|Module skeleton, bootstrap integration, service layer, metadata, and structure completed.
-Installation & Upgrade Framework|1 day|8 hrs|5.25 hrs / 0.66 days|Done|Development install, schema, release package builder, install validation, and cleanup coverage are ready.
-Telehealth Session Management|3-5 days|24-40 hrs|7.25 hrs / 0.91 days|Done|Session creation/reuse, room naming, status tracking, appointment sync, cancellation state completed.
-Participant Limit Enforcement|Added scope|8 hrs|Included|Done|Configured max participant count is enforced at session entry with heartbeat/leave tracking and audit evidence.
-Provider Appointment Integration|Added scope|24-32 hrs|5.75 hrs / 0.72 days|Done|Telehealth category, appointment modal controls, provider launch, and provider authorization completed.
-Embedded Jitsi Integration|Added scope|24-32 hrs|7.75 hrs / 0.97 days|Done|Public Jitsi embed, provider meeting page, device check, full-screen flow, and Medsov branding completed.
-Patient Portal Integration|2-3 days|16-24 hrs|8.25 hrs / 1.03 days|Done|Portal entry, appointment list, waiting room, patient launch, and patient ownership checks completed.
-Waiting Room Development|2-4 days|16-32 hrs|7.25 hrs / 0.91 days|Done|Waiting state, provider status, admit action, polling, and audit events completed.
-Notification Integration|2-3 days|16-24 hrs|12.5 hrs / 1.56 days|Done|Provider UI alert, provider email, OpenEMR native message, patient invite, reschedule, provider-started, and cancellation emails completed.
-Configuration Page Development|1-2 days|8-16 hrs|3 hrs / 0.38 days|Done|Admin configuration page now supports feature flags, Jitsi domain/API settings, notification toggles, and participant capacity field.
-Security & Access Controls|1-2 days|8-16 hrs|5.75 hrs / 0.72 days|Done|Assigned provider/admin/patient access checks and cancelled-session guards completed.
-Testing & Bug Fixes|2-4 days|16-32 hrs|7 hrs / 0.88 days|Done|Formal test evidence report completed for core flows, cancellation, package validation, audit storage, and cross-provider access control.
-Documentation|1 day|8 hrs|3.75 hrs / 0.47 days|Done|README, project plan, progress tracking, and interview time-tracking workbook completed.
-Telehealth Audit Log UI|Added scope|12 hrs|1.5 hrs / 0.19 days|Done|Admin audit log screen now filters and displays stored telehealth events.
-Additional Cancellation Workflow|Added scope|17 hrs|4.25 hrs / 0.53 days|Done|Cancellation detection, session cancellation, portal exclusion, audit logging, and patient cancellation email completed.
-Final Packaging|Added scope|10 hrs|2 hrs / 0.25 days|Done|Release zip created and install validation passed in Docker.
-Development Environment|Added scope|13 hrs|3.25 hrs / 0.41 days|Done|Docker OpenEMR/MariaDB setup, environment variables, module mount, and Mailpit added for local testing.
+Requirements Analysis|1-2 days|8-16 hrs|6 hrs / 0.75 days|Done|Requirements reviewed, reference direction confirmed, project milestones prepared.
+Module Architecture & Design|1-2 days|8-16 hrs|12 hrs / 1.5 days|Done|Module skeleton, bootstrap integration, service layer, metadata, and structure completed.
+Installation & Upgrade Framework|1 day|8 hrs|10 hrs / 1.25 days|Done|Development install, schema, release package builder, install validation, and cleanup coverage are ready.
+Telehealth Session Management|3-5 days|24-40 hrs|20 hrs / 2.5 days|Done|Session creation/reuse, room naming, status tracking, appointment sync, cancellation state completed.
+Participant Limit Enforcement|Added scope|8 hrs|6 hrs / 0.75 days|Done|Configured max participant count is enforced at session entry with heartbeat/leave tracking and audit evidence.
+Provider Appointment Integration|Added scope|24-32 hrs|12 hrs / 1.5 days|Done|Telehealth category, appointment modal controls, provider launch, and provider authorization completed.
+Embedded Jitsi Integration|Added scope|24-32 hrs|12 hrs / 1.5 days|Done|Public Jitsi embed, provider meeting page, device check, full-screen flow, and Medsov branding completed.
+Patient Portal Integration|2-3 days|16-24 hrs|16 hrs / 2 days|Done|Portal entry, appointment list, waiting room, patient launch, and patient ownership checks completed.
+Waiting Room Development|2-4 days|16-32 hrs|14 hrs / 1.75 days|Done|Waiting state, provider status, admit action, polling, and audit events completed.
+Notification Integration|2-3 days|16-24 hrs|18 hrs / 2.25 days|Done|Provider UI alert, provider email, OpenEMR native message, patient invite, reschedule, provider-started, and cancellation emails completed.
+Configuration Page Development|1-2 days|8-16 hrs|6 hrs / 0.75 days|Done|Admin configuration page now supports feature flags, Jitsi domain/API settings, notification toggles, and participant capacity field.
+Security & Access Controls|1-2 days|8-16 hrs|12 hrs / 1.5 days|Done|Assigned provider/admin/patient access checks and cancelled-session guards completed.
+Testing & Bug Fixes|2-4 days|16-32 hrs|18 hrs / 2.25 days|Done|Formal test evidence report completed for core flows, cancellation, package validation, audit storage, and cross-provider access control.
+Documentation|1 day|8 hrs|6 hrs / 0.75 days|Done|README, project plan, progress tracking, and interview time-tracking workbook completed.
+Telehealth Audit Log UI|Added scope|12 hrs|6 hrs / 0.75 days|Done|Admin audit log screen now filters and displays stored telehealth events.
+Additional Cancellation Workflow|Added scope|17 hrs|7 hrs / 0.88 days|Done|Cancellation detection, session cancellation, portal exclusion, audit logging, and patient cancellation email completed.
+Final Packaging|Added scope|10 hrs|5 hrs / 0.63 days|Done|Release zip created and install validation passed in Docker.
+Development Environment|Added scope|13 hrs|6 hrs / 0.75 days|Done|Docker OpenEMR/MariaDB setup, environment variables, module mount, and Mailpit added for local testing.
 """.strip()
 
 
