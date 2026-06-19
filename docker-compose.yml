@@ -1,0 +1,56 @@
+name: medsov-openemr
+
+services:
+  mysql:
+    image: mariadb:10.11
+    restart: unless-stopped
+    command:
+      - mariadbd
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpass}
+      MYSQL_DATABASE: ${OPENEMR_DB_NAME:-openemr}
+      MYSQL_USER: ${OPENEMR_DB_USER:-openemr}
+      MYSQL_PASSWORD: ${OPENEMR_DB_PASSWORD:-openemr}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  openemr:
+    image: ${OPENEMR_IMAGE:-openemr/openemr:8.0.0}
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "${OPENEMR_HTTP_PORT:-8080}:80"
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_ROOT_PASS: ${MYSQL_ROOT_PASSWORD:-rootpass}
+      MYSQL_USER: ${OPENEMR_DB_USER:-openemr}
+      MYSQL_PASS: ${OPENEMR_DB_PASSWORD:-openemr}
+      MYSQL_DATABASE: ${OPENEMR_DB_NAME:-openemr}
+      OE_USER: ${OPENEMR_ADMIN_USER:-admin}
+      OE_PASS: ${OPENEMR_ADMIN_PASSWORD:-pass}
+      MEDSOV_TELEHEALTH_JITSI_DOMAIN: ${MEDSOV_TELEHEALTH_JITSI_DOMAIN:-meet.jit.si}
+      MEDSOV_TELEHEALTH_BASE_URL: ${MEDSOV_TELEHEALTH_BASE_URL:-https://meet.jit.si}
+      MEDSOV_TELEHEALTH_JITSI_EXTERNAL_API: ${MEDSOV_TELEHEALTH_JITSI_EXTERNAL_API:-https://meet.jit.si/external_api.js}
+    volumes:
+      - openemr-sites:/var/www/localhost/htdocs/openemr/sites
+      - ./oe-module-medsov-telehealth:/var/www/localhost/htdocs/openemr/interface/modules/custom_modules/oe-module-medsov-telehealth
+
+  mailpit:
+    image: axllent/mailpit:v1.18
+    restart: unless-stopped
+    ports:
+      - "${MAILPIT_SMTP_PORT:-1026}:1025"
+      - "${MAILPIT_WEB_PORT:-8026}:8025"
+
+volumes:
+  mysql-data:
+  openemr-sites:

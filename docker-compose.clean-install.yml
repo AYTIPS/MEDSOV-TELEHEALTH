@@ -1,0 +1,52 @@
+name: medsov-openemr-clean
+
+services:
+  mysql:
+    image: mariadb:10.11
+    restart: unless-stopped
+    command:
+      - mariadbd
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: openemr
+      MYSQL_USER: openemr
+      MYSQL_PASSWORD: openemr
+    volumes:
+      - clean-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  openemr:
+    image: openemr/openemr:8.0.0.3
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "18080:80"
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_ROOT_PASS: rootpass
+      MYSQL_USER: openemr
+      MYSQL_PASS: openemr
+      MYSQL_DATABASE: openemr
+      OE_USER: admin
+      OE_PASS: pass
+    volumes:
+      - clean-openemr-sites:/var/www/localhost/htdocs/openemr/sites
+
+  mailpit:
+    image: axllent/mailpit:v1.18
+    restart: unless-stopped
+    ports:
+      - "11026:1025"
+      - "18026:8025"
+
+volumes:
+  clean-mysql-data:
+  clean-openemr-sites:

@@ -1,0 +1,26 @@
+.env
+.idea/
+.vscode/
+*.log
+__pycache__/
+*.pyc
+~$*
+docs/~$*
+
+# Docker/runtime state
+openemr-data/
+mysql-data/
+
+# Failed or local source checkouts
+openemr-v*/
+
+# Release packaging output
+dist/*
+!dist/
+!dist/oe-module-medsov-telehealth-1.0.0.zip
+.package/
+
+# Superseded generated interview artifacts
+docs/medsov-telehealth-progress-report.docx
+docs/medsov-telehealth-time-tracking.xlsx
+docs/medsov-telehealth-time-tracking-interview-updated.xlsx

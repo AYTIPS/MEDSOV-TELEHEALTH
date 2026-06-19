@@ -1,0 +1,10 @@
+Medsov Telehealth Module
+
+Provides OpenEMR telehealth workflow support using configurable Jitsi Meet rooms.
+
+Initial scope:
+- Admin configuration for Jitsi and feature flags
+- Embedded Jitsi meeting page inside OpenEMR
+- Waiting room device readiness check
+- Session and audit database tables
+

@@ -1,0 +1,20 @@
+{
+  "name": "medsov/oe-module-medsov-telehealth",
+  "description": "Medsov Telehealth module for OpenEMR using embedded Jitsi Meet rooms",
+  "type": "openemr-module",
+  "minimum-stability": "stable",
+  "license": "GPL-3.0-or-later",
+  "authors": [
+    {
+      "name": "Medsov",
+      "email": "support@medsov.com"
+    }
+  ],
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "OpenEMR\\Modules\\MedsovTelehealth\\": "src/"
+    }
+  }
+}
+
