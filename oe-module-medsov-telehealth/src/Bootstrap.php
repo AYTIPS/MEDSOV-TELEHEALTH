@@ -461,7 +461,7 @@ class Bootstrap
             echo "</div>";
         }
         echo "<div class='medsov-telehealth-actions'>";
-        echo "<a class='medsov-telehealth-start' href='" . attr($launchUrl) . "' onclick='top.restoreSession && top.restoreSession();'>";
+        echo "<a class='medsov-telehealth-start' href='" . attr($launchUrl) . "' target='_blank' rel='noopener' onclick='top.restoreSession && top.restoreSession();'>";
         echo "<i class='fa fa-video-camera' aria-hidden='true'></i><span>" . xlt("Start Telehealth") . "</span>";
         echo "</a>";
         echo "<a class='medsov-telehealth-fullscreen' href='" . attr($launchUrl) . "' target='_blank' rel='noopener' onclick='top.restoreSession && top.restoreSession();'>";
