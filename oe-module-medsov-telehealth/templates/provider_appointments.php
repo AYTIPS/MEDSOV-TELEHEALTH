@@ -263,13 +263,13 @@ function medsov_provider_appt_status(array $appointment): array
                         $patientName = trim((string)($appointment['patient_fname'] ?? '') . ' ' . (string)($appointment['patient_lname'] ?? '')) ?: xl('Patient');
                         $providerName = trim((string)($appointment['provider_fname'] ?? '') . ' ' . (string)($appointment['provider_lname'] ?? '')) ?: xl('Provider');
                         $status = medsov_provider_appt_status($appointment);
-                        $launchUrl = $GLOBALS['webroot']
-                            . '/interface/modules/custom_modules/' . Bootstrap::MODULE_DIRECTORY . '/templates/launch.php?'
+                        $launchFrameUrl = 'modules/custom_modules/' . Bootstrap::MODULE_DIRECTORY . '/templates/launch.php?'
                             . $siteQuery
                             . '&eid=' . urlencode((string)$appointment['pc_eid'])
                             . '&sid=' . urlencode((string)$appointment['session_id'])
                             . '&room=' . urlencode((string)$appointment['meeting_room'])
                             . '&role=provider';
+                        $launchUrl = $GLOBALS['webroot'] . '/interface/' . $launchFrameUrl;
                         $editUrl = $GLOBALS['webroot']
                             . '/interface/main/calendar/add_edit_event.php?'
                             . 'eid=' . urlencode((string)$appointment['pc_eid'])
@@ -297,7 +297,7 @@ function medsov_provider_appt_status(array $appointment): array
                             </td>
                             <td>
                                 <div class="medsov-action-row">
-                                    <a class="btn btn-sm medsov-primary" href="<?php echo attr($launchUrl); ?>" target="_blank" rel="noopener">
+                                    <a class="btn btn-sm medsov-primary" href="<?php echo attr($launchUrl); ?>" data-medsov-provider-launch data-medsov-open-workspace="<?php echo attr($launchFrameUrl); ?>" data-medsov-tab-name="<?php echo attr('medsovtelehealth' . (string)$appointment['pc_eid']); ?>">
                                         <i class="fa fa-video-camera" aria-hidden="true"></i>
                                         <?php echo xlt('Start'); ?>
                                     </a>
@@ -315,5 +315,24 @@ function medsov_provider_appt_status(array $appointment): array
         <?php } ?>
     </section>
 </main>
+<script>
+    document.addEventListener('click', function (event) {
+        var link = event.target.closest('[data-medsov-provider-launch]');
+        if (!link) {
+            return;
+        }
+        var leftNav = top && top.left_nav ? top.left_nav : (window.parent && window.parent.left_nav ? window.parent.left_nav : null);
+        if (!leftNav || typeof leftNav.loadFrame !== 'function') {
+            return;
+        }
+        event.preventDefault();
+        if (top.restoreSession) {
+            top.restoreSession();
+        }
+        var tabName = link.getAttribute('data-medsov-tab-name') || 'medsovtelehealth';
+        var frameUrl = link.getAttribute('data-medsov-open-workspace') || '';
+        leftNav.loadFrame(tabName, tabName, frameUrl);
+    });
+</script>
 </body>
 </html>

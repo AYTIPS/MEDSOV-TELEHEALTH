@@ -196,13 +196,13 @@ class Bootstrap
         $session = $meetingService->createOrGetSessionForAppointment($eid, $appointment);
         $config = $meetingService->getJitsiConfig();
         $waitingRoomEnabled = !empty($config['waiting_room_enabled']);
-        $launchUrl = $GLOBALS['webroot']
-            . '/interface/modules/custom_modules/' . self::MODULE_DIRECTORY . '/templates/launch.php'
+        $launchFrameUrl = 'modules/custom_modules/' . self::MODULE_DIRECTORY . '/templates/launch.php'
             . '?' . $this->getSiteQuery()
             . '&eid=' . urlencode((string)$eid)
             . '&sid=' . urlencode((string)$session['id'])
             . '&room=' . urlencode((string)$session['meeting_room'])
             . '&role=provider';
+        $launchUrl = $GLOBALS['webroot'] . '/interface/' . $launchFrameUrl;
         $statusUrl = $GLOBALS['webroot']
             . '/interface/modules/custom_modules/' . self::MODULE_DIRECTORY . '/templates/session_status.php'
             . '?' . $this->getSiteQuery()
@@ -461,7 +461,7 @@ class Bootstrap
             echo "</div>";
         }
         echo "<div class='medsov-telehealth-actions'>";
-        echo "<a class='medsov-telehealth-start' href='" . attr($launchUrl) . "' target='_blank' rel='noopener' onclick='top.restoreSession && top.restoreSession();'>";
+        echo "<a class='medsov-telehealth-start' href='" . attr($launchUrl) . "' data-medsov-open-workspace='" . attr($launchFrameUrl) . "' data-medsov-tab-name='" . attr('medsovtelehealth' . $eid) . "' onclick='top.restoreSession && top.restoreSession();'>";
         echo "<i class='fa fa-video-camera' aria-hidden='true'></i><span>" . xlt("Start Telehealth") . "</span>";
         echo "</a>";
         echo "<a class='medsov-telehealth-fullscreen' href='" . attr($launchUrl) . "' target='_blank' rel='noopener' onclick='top.restoreSession && top.restoreSession();'>";
@@ -502,6 +502,33 @@ class Bootstrap
                 var admitButton = panel.querySelector('[data-medsov-admit-patient]');
                 var admitLabel = panel.querySelector('[data-medsov-admit-label]');
                 var feedback = panel.querySelector('[data-medsov-telehealth-feedback]');
+                var workspaceLaunch = panel.querySelector('[data-medsov-open-workspace]');
+
+                function openInOpenEmrTab(event) {
+                    var leftNav = top && top.left_nav ? top.left_nav : (window.parent && window.parent.left_nav ? window.parent.left_nav : null);
+                    if (!workspaceLaunch || !leftNav || typeof leftNav.loadFrame !== 'function') {
+                        return;
+                    }
+                    event.preventDefault();
+                    if (top.restoreSession) {
+                        top.restoreSession();
+                    }
+                    var tabName = workspaceLaunch.getAttribute('data-medsov-tab-name') || 'medsovtelehealth';
+                    var frameUrl = workspaceLaunch.getAttribute('data-medsov-open-workspace') || '';
+                    leftNav.loadFrame(tabName, tabName, frameUrl);
+                    window.setTimeout(function () {
+                        if (typeof dlgclose === 'function') {
+                            dlgclose();
+                        } else if (window.parent && typeof window.parent.dlgclose === 'function') {
+                            window.parent.dlgclose();
+                        }
+                    }, 250);
+                }
+
+                if (workspaceLaunch) {
+                    workspaceLaunch.addEventListener('click', openInOpenEmrTab);
+                }
+
 
                 function applyStatus(data) {
                     if (!data || !data.ok) {
